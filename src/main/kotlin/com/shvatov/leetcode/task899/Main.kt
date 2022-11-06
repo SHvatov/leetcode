@@ -1,101 +1,70 @@
 package com.shvatov.leetcode.task899
 
+private fun CharArray.concatToString() = joinToString("")
+private fun List<Char>.concatToString() = joinToString("")
+
 /**
  * Link to the task: https://leetcode.com/problems/orderly-queue/
+ * Runtime: 529 ms, faster than 100.00% of Kotlin online submissions for Orderly Queue.
+ * Memory Usage: 52.4 MB, less than 100.00% of Kotlin online submissions for Orderly Queue.
+ *
+ * Part with k >= 2 inspired by: https://leetcode.com/problems/orderly-queue/solution/
  */
-@Deprecated(message = "see NewSolution instead")
 class Solution {
-    private class InfiniteQueueNode(
-        val ch: Char,
-        var next: InfiniteQueueNode? = null,
-        var previous: InfiniteQueueNode? = null
-    )
 
-    private class InfiniteQueue(queue: CharArray) {
+    private class InfiniteQueueNode(val ch: Char, var next: InfiniteQueueNode? = null)
+
+    private class InfiniteQueue(s: CharArray) {
         private val root: InfiniteQueueNode
         private var pointer: InfiniteQueueNode
-
-        private val persistedQueue = CharArray(queue.size) { Char.MAX_VALUE }
-        private var persistedQueuePtr = 0
+        private val length = s.size
 
         init {
-            root = InfiniteQueueNode(queue[0])
+            root = InfiniteQueueNode(s[0])
             pointer = root
 
             var previous = root
-            for (i in (1 until queue.size)) {
-                val temp = InfiniteQueueNode(queue[i])
+            for (i in (1 until s.size)) {
+                val temp = InfiniteQueueNode(s[i])
                 previous.next = temp
-                temp.previous = previous
                 previous = temp
             }
             previous.next = root
-            root.previous = previous
         }
 
-        fun movePointer(): InfiniteQueue {
-            pointer = pointer.next!!
-            return this
-        }
-
-        fun charAtPointer(): Char = pointer.ch
-
-        fun minimumCharAfterPointer(): Char {
-            var minimum = Char.MAX_VALUE
-            var temp = pointer.next!!
-            while (temp != pointer) {
-                if (temp.ch < minimum) {
-                    minimum = temp.ch
-                }
-                temp = temp.next!!
-            }
-            return minimum
-        }
-
-        fun persistCharAtPointer() {
-            if (persistedQueuePtr == persistedQueue.size) {
-                return
-            }
-            persistedQueue[persistedQueuePtr++] = charAtPointer()
-            pointer.previous!!.next = pointer.next
-            pointer.next!!.previous = pointer.previous
+        fun movePointer() {
             pointer = pointer.next!!
         }
 
-        fun pointerOutOfModificationRange(k: Int) =
-            persistedQueuePtr >= k || persistedQueuePtr == persistedQueue.size
+        fun isFullCircle() = pointer == root
 
-        fun persistRemainingChars() {
-            while (pointer.next != pointer) {
-                persistCharAtPointer()
-            }
-            persistCharAtPointer()
+        override fun toString(): String {
+            val tempCharArray = CharArray(length) { Char.MAX_VALUE }
+            var tempPointer = pointer
+            var tempCounter = 0
+            do {
+                tempCharArray[tempCounter++] = tempPointer.ch
+                tempPointer = tempPointer.next!!
+            } while (tempPointer != pointer)
+            return tempCharArray.concatToString()
         }
-
-        fun getOrderedString() = persistedQueue.joinToString("")
     }
 
     fun orderlyQueue(s: String, k: Int): String {
         if (s.length == 1) return s
+        if (k >= 2) return s.toCharArray().sorted().concatToString()
 
-        if (k >= 2) return s.toCharArray().sorted().joinToString("")
-
+        var minimumString = CharArray(s.length) { Char.MAX_VALUE }.concatToString()
         val queue = InfiniteQueue(s.toCharArray())
-
-        fun step() {
-            val minimumValue = queue.minimumCharAfterPointer()
-            while (queue.charAtPointer() != minimumValue || queue.minimumCharAfterPointer() == minimumValue) {
-                queue.movePointer()
+        do {
+            val currentStr = queue.toString()
+            if (currentStr < minimumString) {
+                minimumString = currentStr
             }
-            queue.persistCharAtPointer()
-        }
+            queue.movePointer()
+        } while (!queue.isFullCircle())
 
-        while (!queue.pointerOutOfModificationRange(k)) {
-            step()
-        }
-        queue.persistRemainingChars()
-
-        return queue.getOrderedString()
+        return minimumString
     }
 }
 
