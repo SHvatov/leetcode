@@ -68,8 +68,42 @@ class Solution {
     }
 }
 
+private fun String.pop(index: Int): String {
+    val charArray = toCharArray()
+    val ch = charArray[index]
+    for (i in (index until charArray.size - 1)) {
+        charArray[i] = charArray[i + 1]
+    }
+    charArray[charArray.size - 1] = ch
+    return charArray.concatToString()
+}
+
+private fun bruteForcePossibleModifications(v: MutableSet<String>, s: String, k: Int) {
+    repeat(k) {
+        val temp = s.pop(it)
+        if (temp in v) {
+            return@repeat
+        }
+        v.add(temp)
+        bruteForcePossibleModifications(v, temp, k)
+    }
+}
+
 fun main() {
     with(Solution()) {
+        val v = mutableSetOf<String>()
+        bruteForcePossibleModifications(v, "xmvzi", 2)
+        println(v.joinToString())
+        println(v.min())
+
+        val v1 = mutableSetOf<String>()
+        bruteForcePossibleModifications(
+            v1, "xitavoyjqiupzadbdyymyvuteolyeerecnuptghl" +
+                    "zsynozeuuvteryojyokpufanyrqqmtgxhyycltlnusyeyyqygwupcaagtkuq", 1
+        )
+        println(v1.joinToString())
+        println(v1.min())
+
         println(orderlyQueue("baaca", 3))
         println(orderlyQueue("cba", 1))
         println(orderlyQueue("v", 1))
