@@ -9,16 +9,16 @@ import java.util.*
  */
 class StockSpanner {
 
-    private data class StockSpan(val price: Int, val span: Int)
+    private data class StockPriceToSpan(val price: Int, val span: Int)
 
-    private val stack = ArrayDeque<StockSpan>()
+    private val stack = ArrayDeque<StockPriceToSpan>()
 
     fun next(price: Int): Int {
         var result = 1
         while (!stack.isEmpty() && stack.first.price <= price) {
             result += stack.pop().span
         }
-        stack.push(StockSpan(price, result))
+        stack.push(StockPriceToSpan(price, result))
         return result
     }
 
