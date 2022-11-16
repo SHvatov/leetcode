@@ -3,7 +3,7 @@ package com.shvatov.leetcode.task947
 /**
  * Link to the task: https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/
  */
-class Solution {
+class OldSolution {
     data class Node(val x: Int, val y: Int)
 
     // 1 <= stones.length <= 1000
@@ -56,7 +56,7 @@ class Solution {
 }
 
 fun main() {
-    with(Solution()) {
+    with(OldSolution()) {
 //        println(
 //            removeStones(
 //                arrayOf(
