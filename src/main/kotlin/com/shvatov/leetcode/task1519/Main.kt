@@ -46,31 +46,31 @@ class Solution {
 
 fun main() {
     with(Solution()) {
-//        println(
-//            countSubTrees(
-//                n = 7,
-//                edges = arrayOf(
-//                    intArrayOf(0, 1),
-//                    intArrayOf(0, 2),
-//                    intArrayOf(1, 4),
-//                    intArrayOf(1, 5),
-//                    intArrayOf(2, 3),
-//                    intArrayOf(2, 6),
-//                ),
-//                labels = "abaedcd"
-//            ).joinToString()
-//        )
-//        println(
-//            countSubTrees(
-//                n = 4,
-//                edges = arrayOf(
-//                    intArrayOf(0, 1),
-//                    intArrayOf(0, 3),
-//                    intArrayOf(1, 2)
-//                ),
-//                labels = "bbbb"
-//            ).joinToString()
-//        )
+        println(
+            countSubTrees(
+                n = 7,
+                edges = arrayOf(
+                    intArrayOf(0, 1),
+                    intArrayOf(0, 2),
+                    intArrayOf(1, 4),
+                    intArrayOf(1, 5),
+                    intArrayOf(2, 3),
+                    intArrayOf(2, 6),
+                ),
+                labels = "abaedcd"
+            ).joinToString()
+        )
+        println(
+            countSubTrees(
+                n = 4,
+                edges = arrayOf(
+                    intArrayOf(0, 1),
+                    intArrayOf(0, 3),
+                    intArrayOf(1, 2)
+                ),
+                labels = "bbbb"
+            ).joinToString()
+        )
         println(
             countSubTrees(
                 n = 4,
